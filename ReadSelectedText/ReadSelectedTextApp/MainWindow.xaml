@@ -1,0 +1,8 @@
+﻿<Window x:Class="ReadSelectedTextApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Speak" Height="131.71" Width="265.923" Loaded="Init" Topmost="True" WindowStyle="ToolWindow">
+    <Canvas>
+        <Button Content="Speak selected text" HorizontalAlignment="Left" VerticalAlignment="Top" Width="123" Height="35" Click="Button_Click" Canvas.Left="26" Canvas.Top="31"/>
+    </Canvas>
+</Window>
