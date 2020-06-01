@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Speech.Synthesis;
+using System.Threading;
 
 namespace ReadSelectedTextApp
 {
@@ -14,7 +15,8 @@ namespace ReadSelectedTextApp
     {
         private WindowInteropHelper nativeWindow;
         private SelectionReader selectionReader;
-        private IntPtr environmentWindow;
+        private readonly IntPtr environmentWindow;
+        private readonly SpeechSynthesizer speech = new SpeechSynthesizer();
 
         public MainWindow()
         {
@@ -40,10 +42,16 @@ namespace ReadSelectedTextApp
 
         private async Task SaySelection(IntPtr? activeWindow = null)
         {
-            string text = await this.selectionReader.GetSelectedText(activeWindow);
-            SpeechSynthesizer speech = new SpeechSynthesizer();
-            speech.SetOutputToDefaultAudioDevice();
-            speech.SpeakAsync(text);
+            if (this.speech.State != SynthesizerState.Ready)
+            {
+                this.speech.SpeakAsyncCancelAll();
+            }
+            else
+            {
+                string text = await this.selectionReader.GetSelectedText(activeWindow);
+                this.speech.SetOutputToDefaultAudioDevice();
+                this.speech.SpeakAsync(text);
+            }
         }
 
         private async void Init(object sender, RoutedEventArgs e)
